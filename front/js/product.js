@@ -2,6 +2,8 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get("id");
+let itemPrice = 0
+let imgUrl, altText, articleName
 
 //On récupère les données de l'API pour l'id en cours de lecture
 fetch(`https://kanapi.gtnsimon.dev/api/products/${id}`)
@@ -48,9 +50,54 @@ function makeColors(colors) {
 function kanapData(sofa) {
   const { imageUrl, altTxt, name, description, price, colors } = sofa; //Un sofa contient : une imageUrl, un altTxt, un name, une description, un price et une colors
   //On créé les éléments suivants
+  itemPrice = price;
+  imgUrl = imageUrl
+  altText = altTxt
+  articleName = name
   makeImage(imageUrl, altTxt);
   makeTitle(name);
   makePrice(price);
   makeDescription(description);
   makeColors(colors);
+}
+
+const button = document.getElementById("addToCart")
+button.addEventListener("click", handleClick)
+
+function handleClick() {
+  const color = document.getElementById("colors").value
+  const quantity = document.getElementById("quantity").value
+  if (isOrderInvalid(color, quantity)) return
+  saveOrder(color, quantity)
+  redirectToCart()
+}
+
+function isOrderInvalid(color, quantity) {
+  if (color == "" && quantity == "0") {
+    alert("Veuillez selectionner une couleur et une quantité s'il vous plait")
+    return true
+  } else if (color == "" && quantity > 0) {
+    alert("Veuillez selectionner une couleur s'il vous plait")
+    return true
+  } else if (quantity == "0" && color != "") {
+    alert("Veuillez selectionner une quantité s'il vous plait")
+    return true
+  }
+}
+
+function saveOrder(color, quantity) {
+  const data = {
+    id: id,
+    color: color,
+    quantity: Number(quantity),
+    price: itemPrice,
+    imageUrl: imgUrl,
+    altTxt: altText,
+    name: articleName
+  }
+  localStorage.setItem(id, JSON.stringify(data))
+}
+
+function redirectToCart() {
+  window.location.href = "cart.html"
 }
