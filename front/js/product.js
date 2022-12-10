@@ -3,7 +3,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get("id");
 let itemPrice = 0
-let imgUrl, altText, articleName
+let imgUrl, altText, articleName, articleDescription
 
 //On récupère les données de l'API pour l'id en cours de lecture
 fetch(`https://kanapi.gtnsimon.dev/api/products/${id}`)
@@ -54,6 +54,7 @@ function kanapData(sofa) {
   imgUrl = imageUrl
   altText = altTxt
   articleName = name
+  articleDescription = description
   makeImage(imageUrl, altTxt);
   makeTitle(name);
   makePrice(price);
@@ -61,30 +62,49 @@ function kanapData(sofa) {
   makeColors(colors);
 }
 
+//Création de l'ajout des articles au panier au clic sur le button
 const button = document.getElementById("addToCart")
 button.addEventListener("click", handleClick)
 
+//Au clic sur le bouton
 function handleClick() {
   const color = document.getElementById("colors").value
   const quantity = document.getElementById("quantity").value
-  if (isOrderInvalid(color, quantity)) return
+  //On vérifie si la commande est valide
+  if (isOrderInvalid(color, quantity)) return //Si elle ne l'est pas, on recommence
+  //On vérifie si la commande est valide
+  if (isOrderValid(color,quantity))
+  // Si elle l'est, on sauvegarder la commande 
   saveOrder(color, quantity)
-  redirectToCart()
+  // redirectToCart()
 }
 
+//Création de la fonction pour savoir si la commande est invalide
 function isOrderInvalid(color, quantity) {
   if (color == "" && quantity == "0") {
-    alert("Veuillez selectionner une couleur et une quantité s'il vous plait")
+    alert("Veuillez selectionner une couleur et une quantité s'il vous plait.")
     return true
   } else if (color == "" && quantity > 0) {
-    alert("Veuillez selectionner une couleur s'il vous plait")
+    alert("Veuillez selectionner une couleur s'il vous plait.")
     return true
   } else if (quantity == "0" && color != "") {
-    alert("Veuillez selectionner une quantité s'il vous plait")
+    alert("Veuillez selectionner une quantité s'il vous plait.")
     return true
   }
 }
 
+//Création de la fonction pour savoir si la commande est valide
+function isOrderValid(color, quantity) {
+    if (color != "" && quantity > 0 && quantity <= 1) {
+    alert("Votre article a bien été ajouté au panier.")
+    return true
+  } else if (color != "" && quantity >= 2) {
+    alert("Vos articles ont bien été ajoutés au panier.")
+    return true
+  }
+}
+
+//On sauvegarde la commande si elle est valide avec les "datas"
 function saveOrder(color, quantity) {
   const data = {
     id: id,
@@ -93,11 +113,13 @@ function saveOrder(color, quantity) {
     price: itemPrice,
     imageUrl: imgUrl,
     altTxt: altText,
-    name: articleName
+    name: articleName,
+    description: articleDescription
   }
+  //On ajoute les "datas" dans le Local Storage
   localStorage.setItem(id, JSON.stringify(data))
 }
 
-function redirectToCart() {
-  window.location.href = "cart.html"
-}
+// function redirectToCart() {
+//   window.location.href = "cart.html"
+// }
