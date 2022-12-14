@@ -106,6 +106,7 @@ function isOrderValid(color, quantity) {
 
 //On sauvegarde la commande si elle est valide avec les "datas"
 function saveOrder(color, quantity) {
+  const key = `${id}-${color}`
   const data = {
     id: id,
     color: color,
@@ -117,9 +118,5 @@ function saveOrder(color, quantity) {
     description: articleDescription
   }
   //On ajoute les "datas" dans le Local Storage
-  localStorage.setItem(id, JSON.stringify(data))
+  localStorage.setItem(key, JSON.stringify(data))
 }
-
-// function redirectToCart() {
-//   window.location.href = "cart.html"
-// }
