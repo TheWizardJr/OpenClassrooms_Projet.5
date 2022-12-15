@@ -101,7 +101,7 @@ function makeDivSettingsQuantity(divSettings, item) {
     input.min = "1"
     input.max = "100"
     input.value = item.quantity
-    input.addEventListener("input", () => updatePriceAndQuantity(item.id, input.value, item))
+    input.addEventListener("input", () => updatePriceAndQuantity(input.value, item))
     divSettingsQuantity.appendChild(input)
     divSettings.appendChild(divSettingsQuantity)
 }
@@ -140,8 +140,8 @@ function displayTotalPrice() {
 }
 
 //Création de la fonction pour mettre à jour le prix et la quantité du panier au clic sur l'input
-function updatePriceAndQuantity(id, newValue, item) {
-    const itemToUpdate = cart.find(item => item.id === id)
+function updatePriceAndQuantity(newValue, item) {
+    const itemToUpdate = cart.find(product => product.id === item.id && product.color === item.color)
     itemToUpdate.quantity = Number(newValue)
     item.quantity = itemToUpdate.quantity
     displayTotalQuantity()
