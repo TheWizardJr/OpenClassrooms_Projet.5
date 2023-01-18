@@ -13,6 +13,12 @@ function retrieveItemsFromLocalStorage() {
 }
 
 //______________________________________________________________________________//
+//Création de la fonction pour trier le panier
+function sortCart() {
+    cart.sort(function(a,b) {
+        return a.id.localeCompare(b.id, undefined, {numeric: true})
+    })
+}
 
 //Création de la fonction pour afficher notre article sur la page
 function displayItem(item) {
@@ -24,6 +30,7 @@ function displayItem(item) {
     article.appendChild(cartItemContent)
     displayTotalQuantity(item)
     displayTotalPrice(item)
+    sortCart()
 }
 
 //Création de l'article
@@ -166,11 +173,13 @@ function deleteItem(item) {
     deleteArticleFromPage(item)
 }
 
+//Fonction qui supprime l'item du local storage
 function deleteDataToLocalStorage(item) {
     const key = `${item.id}-${item.color}`
     localStorage.removeItem(key)
 }
 
+//Fonction qui supprime l'item de la page panier
 function deleteArticleFromPage(item) {
     const articleToDelete = document.querySelector(`article[data-id="${item.id}"][data-color="${item.color}"]`)
     articleToDelete.remove()
