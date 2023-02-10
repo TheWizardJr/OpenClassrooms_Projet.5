@@ -6,7 +6,7 @@ let itemPrice = 0
 let imgUrl, altText, articleName, articleDescription
 
 //On récupère les données de l'API pour l'id en cours de lecture
-fetch(`https://kanapi.gtnsimon.dev/api/products/${id}`)
+fetch(`http://localhost:3000/api/products/${id}`)
   .then((res) => res.json())
   .then((data) => kanapData(data));
 

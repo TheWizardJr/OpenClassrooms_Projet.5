@@ -1,5 +1,5 @@
 //On récupère les données de l'API avec une requête "fetch"
-fetch("https://kanapi.gtnsimon.dev/api/products")
+fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
   .then((data) => kanapData(data))
 
