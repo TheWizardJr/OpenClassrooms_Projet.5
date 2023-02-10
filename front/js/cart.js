@@ -250,8 +250,9 @@ function regCheck(click) {
   } else {
     click.preventDefault();
     msgOk("emailErrorMsg");
-  } if (cart.length === 0) {
-    alert ("Veuillez selectionner un article à acheter")
+  }
+  if (cart.length === 0) {
+    alert("Veuillez selectionner un article à acheter");
   } else {
     let isComplete = confirm("Voulez vous valider votre panier ?");
     if (isComplete === true) {
@@ -282,7 +283,10 @@ function submitForm() {
     },
   })
     .then((res) => res.json())
-    .then((data) => console.log(data));
+    .then((data) => {
+      location.href = `confirmation.html?id=${data.orderId}`;
+    })
+    .catch((err) => console.log(err));
 }
 
 // Le corps de la demande
